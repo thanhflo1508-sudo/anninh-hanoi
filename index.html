@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tuyển Dụng An Ninh Hà Nội - Nguyễn Thành</title>
+    
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <script type="text/javascript">
+        (function(){
+            // THAY "YOUR_PUBLIC_KEY" BẰNG MÃ CỦA BẠN TRÊN EMAILJS
+            emailjs.init("_S2e6jPTEEmBZwTtK"); 
+        })();
+    </script>
+
+    <style>
+        :root { --main: #002D62; --accent: #FFD700; }
+        body { font-family: 'Segoe UI', Arial, sans-serif; background: #f0f2f5; margin: 0; padding-bottom: 50px; }
+        header { background: var(--main); color: white; padding: 40px 20px; text-align: center; border-bottom: 5px solid var(--accent); }
+        .search-container { max-width: 800px; margin: -30px auto 30px; padding: 0 15px; }
+        #searchInput { width: 100%; padding: 15px 25px; border-radius: 30px; border: none; box-shadow: 0 4px 15px rgba(0,0,0,0.2); font-size: 16px; outline: none; box-sizing: border-box; }
+        .container { max-width: 900px; margin: auto; padding: 0 15px; }
+        .job-card { background: white; padding: 20px; border-radius: 12px; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; border-left: 8px solid var(--main); box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+        .job-info h3 { margin: 0 0 8px; color: var(--main); }
+        .tag { background: #e8f0fe; color: #1967d2; padding: 4px 10px; border-radius: 5px; font-size: 13px; margin-right: 5px; }
+        .salary { color: #d32f2f; font-weight: bold; margin-top: 10px; }
+        .btn-apply { background: var(--accent); color: #000; padding: 12px 25px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; }
+
+        /* MODAL GIAO DIỆN */
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); display: none; justify-content: center; align-items: center; z-index: 1000; }
+        .modal-content { background: white; width: 90%; max-width: 450px; padding: 25px; border-radius: 15px; position: relative; }
+        .form-group { margin-bottom: 12px; }
+        .form-group label { display: block; margin-bottom: 5px; font-weight: bold; font-size: 14px; }
+        .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; }
+        .btn-submit { background: var(--main); color: white; width: 100%; padding: 12px; border: none; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; }
+        .btn-close { position: absolute; top: 10px; right: 15px; font-size: 25px; cursor: pointer; border: none; background: none; }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>HỆ THỐNG TUYỂN DỤNG AN NINH HÀ NỘI</h1>
+    <p>Phòng Nhân Sự: NGUYỄN THÀNH - 0338968681</p>
+</header>
+
+<div class="search-container">
+    <input type="text" id="searchInput" placeholder="Tìm theo quận (vd: Cầu Giấy)..." onkeyup="filterJobs()">
+</div>
+
+<div class="container" id="jobList"></div>
+
+<div class="modal-overlay" id="modalApply">
+    <div class="modal-content">
+        <button class="btn-close" onclick="closeModal()">&times;</button>
+        <h2 style="margin-top:0; color:var(--main)">Đăng Ký Ứng Tuyển</h2>
+        <p style="color:red; font-weight:bold; margin-bottom:20px">Hotline Zalo: 0984083582</p>
+        
+        <form id="formApplication" onsubmit="sendToGmail(event)">
+            <div class="form-group">
+                <label>Họ và Tên</label>
+                <input type="text" id="fullName" required>
+            </div>
+            <div class="form-group">
+                <label>Số điện thoại</label>
+                <input type="tel" id="phone" required>
+            </div>
+            <div class="form-group">
+                <label>Trình độ học vấn</label>
+                <select id="education">
+                    <option value="THPT">THPT</option>
+                    <option value="Trung cấp">Trung cấp</option>
+                    <option value="Đại học">Đại học</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Mức lương mong muốn</label>
+                <input type="text" id="salaryExpect">
+            </div>
+            <div class="form-group">
+                <label>Kinh nghiệm làm việc</label>
+                <textarea id="experience" rows="2"></textarea>
+            </div>
+            <button type="submit" class="btn-submit" id="btnSubmit">GỬI HỒ SƠ VỀ PHÒNG NHÂN SỰ</button>
+        </form>
+    </div>
+</div>
+
+<script>
+    const jobs = [
+        // NHÓM 1: CÁC TÒA NHÀ & VĂN PHÒNG (Nguồn: Facebook Tuyển dụng Bảo vệ HN)
+        { id: 1, title: "Bảo vệ Sảnh Tòa nhà Keangnam", company: "Cổ Phần Bảo Vệ Sao Vàng", district: "Nam Từ Liêm", salary: "8.500.000", shift: "12h", hot: true },
+        { id: 2, title: "An ninh Trung tâm Lotte Đào Tấn", company: "An Ninh Phương Nam", district: "Ba Đình", salary: "9.200.000", shift: "8h", hot: true },
+        { id: 3, title: "Bảo vệ Văn phòng hạng A", company: "Dịch vụ Bảo vệ Thủ Đô", district: "Cầu Giấy", salary: "7.500.000", shift: "Ca Hành chính", hot: false },
+        { id: 4, title: "Trực sảnh Chung cư Vinhomes Ocean Park", company: "An Ninh VinHomes", district: "Gia Lâm", salary: "8.800.000", shift: "12h (Xoay ca)", hot: true },
+
+        // NHÓM 2: SIÊU THỊ & TRUNG TÂM THƯƠNG MẠI (Nguồn: Chợ Tốt Việc Làm)
+        { id: 5, title: "An ninh Siêu thị BigC Thăng Long", company: "Tập Đoàn An Ninh Thăng Long", district: "Cầu Giấy", salary: "7.000.000 - 8.200.000", shift: "Ca gãy", hot: false },
+        { id: 6, title: "Bảo vệ Trung tâm Aeon Mall Hà Đông", company: "Bảo vệ Liên Việt", district: "Hà Đông", salary: "8.000.000", shift: "12h", hot: true },
+        { id: 7, title: "Trực cửa hàng Thế Giới Di Động", company: "An Ninh Yuki Sepre", district: "Đống Đa", salary: "6.500.000 - 7.500.000", shift: "Linh hoạt", hot: false },
+
+        // NHÓM 3: KHO BÃI & KHU CÔNG NGHIỆP (Nguồn: LinkedIn & Website Công ty)
+        { id: 8, title: "Tuần tra Khu Công Nghiệp Bắc Thăng Long", company: "Bảo Vệ Long Hải", district: "Đông Anh", salary: "9.500.000", shift: "24h/đêm", hot: true },
+        { id: 9, title: "Bảo vệ Kho Giao Hàng Tiết Kiệm", company: "An Ninh GHTK", district: "Long Biên", salary: "8.000.000", shift: "12h", hot: false },
+        { id: 10, title: "Giữ xe Nhà hàng tiệc cưới", company: "Dịch vụ Bảo vệ Đại Nam", district: "Hai Bà Trưng", salary: "7.200.000", shift: "Ca chiều/tối", hot: false },
+
+        // NHÓM 4: CÁC QUẬN NỘI THÀNH KHÁC
+        { id: 11, title: "Bảo vệ Ngân hàng Techcombank", company: "An Ninh Sao Vàng", district: "Hoàn Kiếm", salary: "8.500.000", shift: "Hành chính", hot: true },
+        { id: 12, title: "An ninh Bệnh viện Việt Đức", company: "Bảo vệ 24h", district: "Hoàn Kiếm", salary: "7.800.000", shift: "Xoay ca", hot: false },
+        { id: 13, title: "Trực cổng Trường quốc tế", company: "An Ninh Việt Nam", district: "Tây Hồ", salary: "8.200.000", shift: "12h", hot: true },
+        { id: 14, title: "Tuần tra công viên Thống Nhất", company: "Dịch vụ công ích", district: "Hai Bà Trưng", salary: "6.800.000", shift: "8h", hot: false }
+    ];
+
+    function renderJobs(data) {
+        const list = document.getElementById('jobList');
+        list.innerHTML = data.map(job => `
+            <div class="job-card">
+                <div class="job-info">
+                    <h3>${job.title}</h3>
+                    <span class="tag">📍 ${job.district}</span>
+                    <div class="salary">Lương: ${job.salary} VNĐ</div>
+                </div>
+                <button class="btn-apply" onclick="openModal()">ỨNG TUYỂN</button>
+            </div>
+        `).join('');
+    }
+
+    function openModal() { document.getElementById('modalApply').style.display = 'flex'; }
+    function closeModal() { document.getElementById('modalApply').style.display = 'none'; }
+
+    // HÀM GỬI EMAIL VỀ GMAIL CỦA THÀNH
+    function sendToGmail(event) {
+        event.preventDefault();
+        const btn = document.getElementById('btnSubmit');
+        btn.innerText = "ĐANG GỬI...";
+        btn.disabled = true;
+
+        const params = {
+            fullName: document.getElementById('fullName').value,
+            phone: document.getElementById('phone').value,
+            education: document.getElementById('education').value,
+            salaryExpect: document.getElementById('salaryExpect').value,
+            experience: document.getElementById('experience').value
+        };
+
+        // THAY "YOUR_SERVICE_ID" VÀ "YOUR_TEMPLATE_ID" BẰNG MÃ CỦA BẠN
+        emailjs.send('service_o9hrahu', 'template_8vdaj6e', params)
+            .then(function() {
+                alert("Hồ sơ đã gửi thành công về Gmail của Nguyễn Thành!\nChúng tôi sẽ gọi lại cho bạn sớm nhất qua Hotline: 0338968681");
+                closeModal();
+                btn.innerText = "GỬI HỒ SƠ VỀ PHÒNG NHÂN SỰ";
+                btn.disabled = false;
+                document.getElementById('formApplication').reset();
+            }, function(error) {
+                alert("Lỗi hệ thống: " + JSON.stringify(error));
+                btn.disabled = false;
+            });
+    }
+
+    function filterJobs() {
+        const val = document.getElementById('searchInput').value.toLowerCase();
+        const filtered = jobs.filter(j => j.district.toLowerCase().includes(val) || j.title.toLowerCase().includes(val));
+        renderJobs(filtered);
+    }
+
+    renderJobs(jobs);
+</script>
+</body>
+</html>
