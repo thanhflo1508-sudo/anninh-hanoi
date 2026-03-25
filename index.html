@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hệ Thống Tuyển Dụng An Ninh Hà Nội - Nguyễn Thành</title>
+    <title>Tuyển Dụng An Ninh Hà Nội - Nguyễn Thành</title>
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
@@ -17,26 +17,40 @@
         
         header { 
             background: linear-gradient(135deg, var(--main) 0%, #004b8d 100%); 
-            color: white; padding: 70px 20px 110px; text-align: center; 
+            color: white; padding: 60px 20px 100px; text-align: center; 
             border-bottom: 6px solid var(--accent); box-shadow: 0 4px 25px rgba(0,0,0,0.2);
         }
-        header h1 { margin: 0; font-size: 34px; text-transform: uppercase; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); }
+
+        /* STYLE ẢNH ĐẠI DIỆN CỦA THÀNH */
+        .admin-portrait {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid var(--accent);
+            margin-bottom: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            background: white;
+        }
+
+        header h1 { margin: 0; font-size: 32px; text-transform: uppercase; display: flex; align-items: center; justify-content: center; gap: 15px; }
+        header p { margin-top: 10px; font-size: 16px; opacity: 0.9; }
 
         .search-area { 
-            max-width: 950px; margin: -55px auto 40px; padding: 30px; 
+            max-width: 950px; margin: -55px auto 40px; padding: 25px; 
             background: white; border-radius: 20px; box-shadow: 0 15px 40px rgba(0,0,0,0.15); 
             display: flex; gap: 15px; flex-wrap: wrap; position: relative; z-index: 10;
         }
-        #searchInput { flex: 2; padding: 15px 25px; border-radius: 12px; border: 2px solid #eee; outline: none; font-size: 16px; }
+        #searchInput { flex: 2; padding: 15px 20px; border-radius: 12px; border: 2px solid #eee; outline: none; font-size: 16px; }
         #salaryFilter { flex: 1; padding: 15px; border-radius: 12px; border: 2px solid #eee; font-weight: 600; min-width: 180px; }
 
         .container { max-width: 1200px; margin: auto; padding: 0 20px; display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 25px; }
         
-        .job-card { background: white; border-radius: 20px; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.05); transition: 0.3s; border: 1px solid #eee; display: flex; flex-direction: column; }
+        .job-card { background: white; border-radius: 20px; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.05); transition: 0.3s; border: 1px solid #eee; display: flex; flex-direction: column; position: relative; }
         .job-card:hover { transform: translateY(-8px); box-shadow: 0 15px 35px rgba(0,0,0,0.1); }
         .job-header { background: #f9fbff; padding: 15px 20px; border-bottom: 1px solid #eee; font-size: 13px; font-weight: bold; color: #666; }
         .job-body { padding: 20px; flex-grow: 1; }
-        .hot-badge { position: absolute; top: 12px; right: 12px; background: var(--red); color: white; padding: 5px 12px; border-radius: 20px; font-size: 10px; font-weight: bold; }
+        .hot-badge { position: absolute; top: 12px; right: 12px; background: var(--red); color: white; padding: 4px 10px; border-radius: 20px; font-size: 10px; font-weight: bold; }
         
         .salary-text { font-size: 22px; color: var(--red); font-weight: 800; margin: 12px 0; }
         .btn-group { display: flex; gap: 8px; margin-top: 15px; }
@@ -48,13 +62,12 @@
         @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.08); } 100% { transform: scale(1); } }
         
         .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); display: none; justify-content: center; align-items: center; z-index: 2000; }
-        .modal-content { background: white; width: 90%; max-width: 450px; padding: 35px; border-radius: 25px; position: relative; }
+        .modal-content { background: white; width: 95%; max-width: 450px; padding: 30px; border-radius: 25px; position: relative; }
         .form-group { margin-bottom: 15px; }
         .form-group label { display: block; margin-bottom: 5px; font-weight: bold; }
         .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 10px; box-sizing: border-box; }
         .btn-submit { background: var(--main); color: white; width: 100%; padding: 15px; border: none; border-radius: 12px; font-size: 18px; font-weight: bold; cursor: pointer; }
 
-        /* Màn hình cảm ơn */
         #thankYouState { display: none; text-align: center; }
         .success-icon { font-size: 60px; color: #28a745; margin-bottom: 20px; }
     </style>
@@ -62,12 +75,13 @@
 <body>
 
 <header>
-    <h1><i class="fas fa-user-shield"></i> TUYỂN DỤNG AN NINH HÀ NỘI</h1>
-    <p><i class="fas fa-id-card"></i> Nhân Sự: <strong>NGUYỄN THÀNH</strong> | <i class="fas fa-phone"></i> 0338968681</p>
+    <img src="me.jpg" alt="Nguyễn Thành" class="admin-portrait">
+    <h1>TUYỂN DỤNG AN NINH HÀ NỘI</h1>
+    <p>Phòng Nhân Sự: <strong>NGUYỄN THÀNH</strong> | <i class="fas fa-phone"></i> 0338968681</p>
 </header>
 
 <div class="search-area">
-    <input type="text" id="searchInput" placeholder="Tìm quận, tên công ty hoặc vị trí..." onkeyup="filterJobs()">
+    <input type="text" id="searchInput" placeholder="Tìm quận, công ty hoặc vị trí..." onkeyup="filterJobs()">
     <select id="salaryFilter" onchange="filterJobs()">
         <option value="0">💰 Tất cả mức lương</option>
         <option value="8">Trên 8 Triệu</option>
@@ -86,23 +100,23 @@
     <div class="modal-content">
         <div id="formState">
             <button style="position:absolute; right:20px; top:20px; border:none; background:none; font-size:24px; cursor:pointer;" onclick="closeModal()">×</button>
-            <h2 style="color:var(--main); margin-top:0;">Ứng Tuyển Ngay</h2>
+            <h2 style="color:var(--main); margin-top:0;">Gửi Hồ Sơ</h2>
             <form id="formApplication" onsubmit="sendToGmail(event)">
                 <div class="form-group"><label>Họ tên</label><input type="text" id="fullName" required></div>
-                <div class="form-group"><label>SĐT</label><input type="tel" id="phone" required></div>
-                <div class="form-group"><label>Trình độ</label>
-                    <select id="education"><option>THPT</option><option>Trung cấp</option><option>Đại học</option></select>
+                <div class="form-group"><label>Số điện thoại</label><input type="tel" id="phone" required></div>
+                <div class="form-group"><label>Trình độ văn hóa</label>
+                    <select id="education"><option>THPT</option><option>Trung cấp</option><option>Cao đẳng/Đại học</option></select>
                 </div>
-                <div class="form-group"><label>Lương mong muốn</label><input type="number" id="salaryExpect"></div>
-                <div class="form-group"><label>Kinh nghiệm</label><textarea id="experience" rows="2"></textarea></div>
-                <button type="submit" class="btn-submit" id="btnSubmit">GỬI HỒ SƠ</button>
+                <div class="form-group"><label>Lương mong muốn (Triệu)</label><input type="number" id="salaryExpect"></div>
+                <div class="form-group"><label>Kinh nghiệm làm việc</label><textarea id="experience" rows="2" placeholder="Ví dụ: Đã làm bảo vệ 2 năm..."></textarea></div>
+                <button type="submit" class="btn-submit" id="btnSubmit">ỨNG TUYỂN NGAY</button>
             </form>
         </div>
         <div id="thankYouState">
             <div class="success-icon"><i class="fas fa-check-circle"></i></div>
             <h2>GỬI THÀNH CÔNG!</h2>
-            <p>Hồ sơ đã được chuyển đến <b>Nguyễn Thành</b>.</p>
-            <p>Chúng tôi sẽ gọi lại cho bạn sớm nhất.</p>
+            <p>Hồ sơ của bạn đã được gửi đến <b>Nguyễn Thành</b>.</p>
+            <p>Chúng tôi sẽ liên hệ lại với bạn sớm nhất qua điện thoại.</p>
             <button class="btn-submit" onclick="closeModal()">ĐÓNG</button>
         </div>
     </div>
@@ -110,75 +124,93 @@
 
 <script>
     const jobs = [
-        // NAM TỪ LIÊM (5)
-        { id: 1, title: "An ninh Keangnam 72", company: "Sao Vàng", district: "Nam Từ Liêm", salary: 8.5, hot: true, map: "Keangnam+Hanoi" },
+        // NAM TỪ LIÊM (8 tin)
+        { id: 1, title: "An ninh Keangnam Landmark", company: "Sao Vàng", district: "Nam Từ Liêm", salary: 8.5, hot: true, map: "Keangnam+Landmark+72" },
         { id: 2, title: "Bảo vệ Vinhomes Smart City", company: "VinGuard", district: "Nam Từ Liêm", salary: 9.0, hot: true, map: "Vinhomes+Smart+City" },
-        { id: 3, title: "Trực sảnh FLC Complex", company: "An Ninh Việt", district: "Nam Từ Liêm", salary: 8.2, hot: false, map: "FLC+Complex+My+Dinh" },
+        { id: 3, title: "Trực sảnh FLC Mỹ Đình", company: "An Ninh Việt", district: "Nam Từ Liêm", salary: 8.2, hot: false, map: "FLC+Complex+My+Dinh" },
         { id: 4, title: "An ninh BX Mỹ Đình", company: "Thủ Đô Sec", district: "Nam Từ Liêm", salary: 7.8, hot: false, map: "Ben+xe+My+Dinh" },
-        { id: 5, title: "Bảo vệ sân vận động Mỹ Đình", company: "Sao Vàng", district: "Nam Từ Liêm", salary: 8.0, hot: true, map: "San+van+dong+My+Dinh" },
+        { id: 5, title: "Bảo vệ SVĐ Mỹ Đình", company: "Sao Vàng", district: "Nam Từ Liêm", salary: 8.0, hot: true, map: "San+van+dong+My+Dinh" },
+        { id: 51, title: "An ninh tòa nhà CT8", company: "Sao Vàng", district: "Nam Từ Liêm", salary: 8.3, hot: false, map: "Chung+cu+CT8+My+Dinh" },
+        { id: 52, title: "Bảo vệ kho Viettel Post", company: "Viettel Sec", district: "Nam Từ Liêm", salary: 8.7, hot: true, map: "Viettel+Post+My+Dinh" },
+        { id: 53, title: "Trực cổng ĐH FPT", company: "FPT Sec", district: "Nam Từ Liêm", salary: 7.5, hot: false, map: "Dai+hoc+FPT+Ha+Noi" },
 
-        // CẦU GIẤY (6)
+        // CẦU GIẤY (8 tin)
         { id: 6, title: "Trực sảnh Vinhomes Skylake", company: "VinGuard", district: "Cầu Giấy", salary: 10.5, hot: true, map: "Vinhomes+Skylake" },
         { id: 7, title: "An ninh văn phòng Duy Tân", company: "Phương Nam", district: "Cầu Giấy", salary: 8.5, hot: false, map: "Duy+Tan+Cau+Giay" },
         { id: 8, title: "Bảo vệ Indochina Plaza", company: "Yuki Sepre", district: "Cầu Giấy", salary: 9.0, hot: true, map: "IPH+Cau+Giay" },
         { id: 9, title: "An ninh BigC Thăng Long", company: "Thăng Long SC", district: "Cầu Giấy", salary: 7.5, hot: false, map: "Big+C+Thang+Long" },
         { id: 10, title: "Bảo vệ ĐH Quốc Gia", company: "An Ninh Trường Học", district: "Cầu Giấy", salary: 7.0, hot: false, map: "Dai+hoc+Quoc+Gia+HN" },
-        { id: 11, title: "Trực tòa nhà Discovery Complex", company: "Sao Vàng", district: "Cầu Giấy", salary: 8.8, hot: true, map: "Discovery+Complex" },
+        { id: 11, title: "Trực tòa nhà Discovery", company: "Sao Vàng", district: "Cầu Giấy", salary: 8.8, hot: true, map: "Discovery+Complex" },
+        { id: 54, title: "An ninh PVI Tower", company: "Yuki Sepre", district: "Cầu Giấy", salary: 9.2, hot: false, map: "PVI+Tower" },
+        { id: 55, title: "Bảo vệ công viên Nghĩa Đô", company: "Đô Thị Sec", district: "Cầu Giấy", salary: 7.2, hot: false, map: "Cong+vien+Nghia+Do" },
 
-        // BA ĐÌNH (5)
+        // BA ĐÌNH (7 tin)
         { id: 12, title: "An ninh Lotte Center", company: "Phương Nam", district: "Ba Đình", salary: 9.5, hot: true, map: "Lotte+Center+Hanoi" },
-        { id: 13, title: "Bảo vệ Đại sứ quán Nhật", company: "Global Sec", district: "Ba Đình", salary: 12.0, hot: true, map: "Japanese+Embassy" },
-        { id: 14, title: "Trực tòa nhà EVN Tower", company: "Điện Lực Sec", district: "Ba Đình", salary: 8.5, hot: false, map: "EVN+Tower" },
-        { id: 15, title: "Bảo vệ kho bạc Ba Đình", company: "An Ninh 24h", district: "Ba Đình", salary: 8.0, hot: false, map: "Kho+bac+Ba+Dinh" },
-        { id: 16, title: "An ninh Vinhomes Metropolis", company: "VinGuard", district: "Ba Đình", salary: 10.0, hot: true, map: "Vinhomes+Metropolis" },
+        { id: 13, title: "Bảo vệ Đại sứ quán", company: "Global Sec", district: "Ba Đình", salary: 12.0, hot: true, map: "Japanese+Embassy" },
+        { id: 14, title: "Trực tòa nhà EVN", company: "Điện Lực Sec", district: "Ba Đình", salary: 8.5, hot: false, map: "EVN+Tower" },
+        { id: 15, title: "Bảo vệ kho bạc", company: "An Ninh 24h", district: "Ba Đình", salary: 8.0, hot: false, map: "Kho+bac+Ba+Dinh" },
+        { id: 16, title: "An ninh Metropolis", company: "VinGuard", district: "Ba Đình", salary: 10.0, hot: true, map: "Vinhomes+Metropolis" },
+        { id: 56, title: "Bảo vệ BV Hồng Ngọc", company: "Sao Vàng", district: "Ba Đình", salary: 8.6, hot: true, map: "Benh+vien+Hong+Ngoc" },
+        { id: 57, title: "An ninh khu ngoại giao đoàn", company: "Global Sec", district: "Ba Đình", salary: 9.8, hot: false, map: "Khu+ngoai+giao+doan" },
 
-        // ĐỐNG ĐA (5)
-        { id: 17, title: "Bảo vệ Vincom Nguyễn Chí Thanh", company: "VinGuard", district: "Đống Đa", salary: 9.2, hot: true, map: "Vincom+Nguyen+Chi+Thanh" },
-        { id: 18, title: "An ninh Bệnh viện Bạch Mai", company: "Sao Vàng", district: "Đống Đa", salary: 8.0, hot: false, map: "Benh+vien+Bach+Mai" },
+        // ĐỐNG ĐA (7 tin)
+        { id: 17, title: "Bảo vệ Vincom NCT", company: "VinGuard", district: "Đống Đa", salary: 9.2, hot: true, map: "Vincom+Nguyen+Chi+Thanh" },
+        { id: 18, title: "An ninh BV Bạch Mai", company: "Sao Vàng", district: "Đống Đa", salary: 8.0, hot: false, map: "Benh+vien+Bach+Mai" },
         { id: 19, title: "Trực sảnh Mipec Tây Sơn", company: "Mipec Sec", district: "Đống Đa", salary: 8.7, hot: false, map: "Mipec+Tay+Son" },
         { id: 20, title: "Bảo vệ ĐH Thủy Lợi", company: "An Ninh Trường Học", district: "Đống Đa", salary: 7.2, hot: false, map: "Dai+hoc+Thuy+Loi" },
         { id: 21, title: "An ninh VP Bank Láng Hạ", company: "Yuki Sepre", district: "Đống Đa", salary: 9.0, hot: true, map: "VPBank+Lang+Ha" },
+        { id: 58, title: "Bảo vệ rạp chiếu phim QG", company: "Sao Vàng", district: "Đống Đa", salary: 8.2, hot: false, map: "Rap+chieu+phim+Quoc+gia" },
+        { id: 59, title: "An ninh tòa nhà TNR", company: "TNR Sec", district: "Đống Đa", salary: 9.5, hot: true, map: "TNR+Tower+Nguyen+Chi+Thanh" },
 
-        // HOÀN KIẾM (5)
+        // HOÀN KIẾM (6 tin)
         { id: 22, title: "Bảo vệ Ngân hàng TCB", company: "Sao Vàng", district: "Hoàn Kiếm", salary: 8.8, hot: false, map: "TCB+Ly+Thuong+Kiet" },
         { id: 23, title: "An ninh KS Metropole", company: "Global Sec", district: "Hoàn Kiếm", salary: 11.5, hot: true, map: "Metropole+Hanoi" },
         { id: 24, title: "Bảo vệ Nhà Hát Lớn", company: "Thủ Đô Sec", district: "Hoàn Kiếm", salary: 8.2, hot: false, map: "Nha+Hat+Lon+HN" },
         { id: 25, title: "An ninh phố đi bộ", company: "An Ninh Quận", district: "Hoàn Kiếm", salary: 7.5, hot: true, map: "Ho+Guom" },
         { id: 26, title: "Trực tòa nhà BIDV", company: "Yuki Sepre", district: "Hoàn Kiếm", salary: 9.0, hot: false, map: "BIDV+Tran+Quang+Khai" },
+        { id: 60, title: "Bảo vệ Tràng Tiền Plaza", company: "VinGuard", district: "Hoàn Kiếm", salary: 9.5, hot: true, map: "Trang+Tien+Plaza" },
 
-        // HAI BÀ TRƯNG (4)
+        // HAI BÀ TRƯNG (6 tin)
         { id: 27, title: "An ninh Times City", company: "VinGuard", district: "Hai Bà Trưng", salary: 10.0, hot: true, map: "Times+City+Hanoi" },
         { id: 28, title: "Bảo vệ Vincom Bà Triệu", company: "VinGuard", district: "Hai Bà Trưng", salary: 9.5, hot: true, map: "Vincom+Ba+Trieu" },
         { id: 29, title: "An ninh ĐH Bách Khoa", company: "An Ninh Trường Học", district: "Hai Bà Trưng", salary: 7.5, hot: false, map: "Dai+hoc+Bach+Khoa" },
         { id: 30, title: "Bảo vệ BV Thanh Nhàn", company: "Sao Vàng", district: "Hai Bà Trưng", salary: 7.8, hot: false, map: "Benh+vien+Thanh+Nhan" },
+        { id: 61, title: "An ninh chung cư Sun Grand", company: "An Ninh Việt", district: "Hai Bà Trưng", salary: 8.5, hot: false, map: "Sun+Grand+City+Luong+Yen" },
+        { id: 62, title: "Bảo vệ chợ Mơ", company: "Thủ Đô Sec", district: "Hai Bà Trưng", salary: 7.0, hot: false, map: "Cho+Mo" },
 
-        // THANH XUÂN (4)
+        // THANH XUÂN (6 tin)
         { id: 31, title: "Bảo vệ Royal City", company: "VinGuard", district: "Thanh Xuân", salary: 10.0, hot: true, map: "Royal+City" },
         { id: 32, title: "An ninh tòa nhà Hapulico", company: "Sao Vàng", district: "Thanh Xuân", salary: 8.5, hot: false, map: "Hapulico+Complex" },
-        { id: 33, title: "Trực chung cư GoldSeason", company: "TN Security", district: "Thanh Xuân", salary: 8.2, hot: true, map: "GoldSeason+Nguyen+Tuan" },
-        { id: 34, title: "An ninh siêu thị Coop Mart", company: "Phương Nam", district: "Thanh Xuân", salary: 7.7, hot: false, map: "Coop+Mart+Ha+Dong" },
+        { id: 33, title: "Trực sảnh GoldSeason", company: "TN Security", district: "Thanh Xuân", salary: 8.2, hot: true, map: "GoldSeason+Nguyen+Tuan" },
+        { id: 63, title: "Bảo vệ ĐH Hà Nội", company: "An Ninh Trường Học", district: "Thanh Xuân", salary: 7.5, hot: false, map: "Dai+hoc+Ha+Noi" },
+        { id: 64, title: "An ninh chung cư Imperia", company: "Sao Vàng", district: "Thanh Xuân", salary: 8.8, hot: true, map: "Imperia+Garden" },
+        { id: 65, title: "Bảo vệ siêu thị Tops Market", company: "Phương Nam", district: "Thanh Xuân", salary: 8.0, hot: false, map: "Tops+Market+Le+Van+Luong" },
 
-        // HÀ ĐÔNG (4)
+        // HÀ ĐÔNG (6 tin)
         { id: 35, title: "Bảo vệ Aeon Mall Hà Đông", company: "Liên Việt", district: "Hà Đông", salary: 8.5, hot: true, map: "Aeon+Mall+Ha+Dong" },
         { id: 36, title: "An ninh chung cư Mulberry", company: "Sao Vàng", district: "Hà Đông", salary: 8.3, hot: false, map: "Mulberry+Lane" },
         { id: 37, title: "Trực sảnh Melinh Plaza", company: "Mê Linh Sec", district: "Hà Đông", salary: 7.5, hot: false, map: "Melinh+Plaza+Ha+Dong" },
         { id: 38, title: "Bảo vệ KĐT Văn Phú", company: "Thủ Đô Sec", district: "Hà Đông", salary: 8.0, hot: true, map: "Van+Phu+Ha+Dong" },
+        { id: 66, title: "An ninh BV Quân Y 103", company: "Sao Vàng", district: "Hà Đông", salary: 8.5, hot: false, map: "Benh+vien+103" },
+        { id: 67, title: "Bảo vệ chung cư Xuân Mai", company: "Phương Nam", district: "Hà Đông", salary: 7.8, hot: false, map: "Xuan+Mai+Complex" },
 
-        // LONG BIÊN (4)
-        { id: 39, title: "An ninh Aeon Mall Long Biên", company: "Liên Việt", district: "Long Biên", salary: 8.5, hot: true, map: "Aeon+Mall+Long+Bien" },
+        // LONG BIÊN (6 tin)
+        { id: 39, title: "An ninh Aeon Long Biên", company: "Liên Việt", district: "Long Biên", salary: 8.5, hot: true, map: "Aeon+Mall+Long+Bien" },
         { id: 40, title: "Bảo vệ kho Shopee", company: "An Ninh Việt", district: "Long Biên", salary: 8.0, hot: false, map: "Gia+Lam+Hanoi" },
-        { id: 41, title: "Trực khu Vinhomes Riverside", company: "VinGuard", district: "Long Biên", salary: 11.0, hot: true, map: "Vinhomes+Riverside" },
-        { id: 42, title: "An ninh sân Golf Long Biên", company: "Long Hải", district: "Long Biên", salary: 9.0, hot: false, map: "San+Golf+Long+Bien" },
+        { id: 41, title: "Trực Vinhomes Riverside", company: "VinGuard", district: "Long Biên", salary: 11.0, hot: true, map: "Vinhomes+Riverside" },
+        { id: 42, title: "An ninh sân Golf", company: "Long Hải", district: "Long Biên", salary: 9.0, hot: false, map: "San+Golf+Long+Bien" },
+        { id: 68, title: "Bảo vệ chung cư Mipec", company: "Mipec Sec", district: "Long Biên", salary: 8.2, hot: false, map: "Mipec+Riverside" },
+        { id: 69, title: "An ninh BV Tâm Anh", company: "Sao Vàng", district: "Long Biên", salary: 8.8, hot: true, map: "Benh+vien+Tam+Anh" },
 
-        // CÁC QUẬN/HUYỆN KHÁC (8)
-        { id: 43, title: "Bảo vệ biệt thự Ciputra", company: "Ciputra Sec", district: "Tây Hồ", salary: 11.0, hot: true, map: "Ciputra+Hanoi" },
+        // NGOẠI THÀNH & KCN (8 tin)
+        { id: 43, title: "Bảo vệ Ciputra", company: "Ciputra Sec", district: "Tây Hồ", salary: 11.0, hot: true, map: "Ciputra+Hanoi" },
         { id: 44, title: "An ninh KCN Bắc Thăng Long", company: "Long Hải", district: "Đông Anh", salary: 9.5, hot: true, map: "KCN+Bac+Thang+Long" },
-        { id: 45, title: "Bảo vệ kho GHTK Mê Linh", company: "GHTK Sec", district: "Mê Linh", salary: 8.2, hot: false, map: "Kho+GHTK+Me+Linh" },
+        { id: 45, title: "Bảo vệ kho GHTK", company: "GHTK Sec", district: "Mê Linh", salary: 8.2, hot: false, map: "Kho+GHTK+Me+Linh" },
         { id: 46, title: "An ninh nhà máy Samsung", company: "Samsung Sec", district: "Thái Nguyên", salary: 10.5, hot: true, map: "Samsung+Thai+Nguyen" },
-        { id: 47, title: "Trực sảnh Goldmark City", company: "Sao Vàng", district: "Bắc Từ Liêm", salary: 8.5, hot: false, map: "Goldmark+City" },
+        { id: 47, title: "Trực Goldmark City", company: "Sao Vàng", district: "Bắc Từ Liêm", salary: 8.5, hot: false, map: "Goldmark+City" },
         { id: 48, title: "Bảo vệ KCN Quang Minh", company: "An Ninh Việt", district: "Mê Linh", salary: 8.8, hot: true, map: "KCN+Quang+Minh" },
         { id: 49, title: "An ninh tòa nhà PV Oil", company: "Dầu Khí Sec", district: "Tây Hồ", salary: 9.0, hot: false, map: "PV+Oil+Tower" },
-        { id: 50, title: "Trực cổng ĐH Mỏ Địa Chất", company: "An Ninh Trường Học", district: "Bắc Từ Liêm", salary: 7.2, hot: false, map: "Dai+hoc+Mo+Dia+Chat" }
+        { id: 70, title: "Bảo vệ kho Lazada", company: "An Ninh Việt", district: "Gia Lâm", salary: 8.5, hot: true, map: "KCN+Dai+Tu" }
     ];
 
     function renderJobs(data) {
@@ -226,10 +258,10 @@
                 document.getElementById('formState').style.display = 'none';
                 document.getElementById('thankYouState').style.display = 'block';
                 document.getElementById('formApplication').reset();
-                btn.innerText = "GỬI HỒ SƠ";
+                btn.innerText = "ỨNG TUYỂN NGAY";
                 btn.disabled = false;
             }, (err) => {
-                alert("Lỗi kết nối: " + JSON.stringify(err));
+                alert("Có lỗi xảy ra, vui lòng thử lại sau.");
                 btn.disabled = false;
             });
     }
@@ -238,7 +270,7 @@
         const keyword = document.getElementById('searchInput').value.toLowerCase();
         const minSalary = parseFloat(document.getElementById('salaryFilter').value);
         const filtered = jobs.filter(j => 
-            (j.district.toLowerCase().includes(keyword) || j.title.toLowerCase().includes(keyword)) &&
+            (j.district.toLowerCase().includes(keyword) || j.title.toLowerCase().includes(keyword) || j.company.toLowerCase().includes(keyword)) &&
             (j.salary >= minSalary)
         );
         renderJobs(filtered);
